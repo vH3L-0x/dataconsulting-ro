@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
-    if (!localStorage.getItem('cookieConsent')) {
+    // Check if user has already made a choice using sessionStorage or localStorage
+    const hasConsent = localStorage.getItem('cookieConsent') || sessionStorage.getItem('cookieConsent');
+    if (!hasConsent && window.location.pathname === '/index.html') {
         showCookieConsent();
     }
 });
@@ -133,7 +135,9 @@ function saveSettings(consentBar) {
 }
 
 function saveCookieSettings(settings) {
+    // Store in both localStorage (persistent) and sessionStorage (current session)
     localStorage.setItem('cookieConsent', 'true');
+    sessionStorage.setItem('cookieConsent', 'true');
     localStorage.setItem('cookieSettings', JSON.stringify(settings));
 }
 
