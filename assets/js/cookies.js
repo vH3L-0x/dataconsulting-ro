@@ -4,6 +4,46 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!hasConsent && window.location.pathname === '/index.html') {
         showCookieConsent();
     }
+
+    // Only show cookie disclaimer on homepage
+    if ((window.location.pathname === '/' || window.location.pathname === '/index.html') 
+        && !localStorage.getItem('cookieConsent')) {
+        
+        // Create cookie banner
+        const cookieBar = document.createElement('div');
+        cookieBar.className = 'cookie-disclaimer';
+        cookieBar.innerHTML = `
+            <div class="cookie-content">
+                <p class="lang-en">This website uses cookies to ensure you get the best experience.</p>
+                <p class="lang-ro">Acest site folosește cookie-uri pentru a vă oferi cea mai bună experiență.</p>
+                <div class="cookie-buttons">
+                    <button id="acceptCookies" class="accept-button">
+                        <span class="lang-en">Accept</span>
+                        <span class="lang-ro">Accept</span>
+                    </button>
+                    <button id="declineCookies" class="decline-button">
+                        <span class="lang-en">Decline</span>
+                        <span class="lang-ro">Refuz</span>
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        // Add banner to page
+        document.body.appendChild(cookieBar);
+
+        // Handle accept button click
+        document.getElementById('acceptCookies').addEventListener('click', function() {
+            localStorage.setItem('cookieConsent', 'accepted');
+            cookieBar.remove();
+        });
+
+        // Handle decline button click
+        document.getElementById('declineCookies').addEventListener('click', function() {
+            localStorage.setItem('cookieConsent', 'declined');
+            cookieBar.remove();
+        });
+    }
 });
 
 const cookieCategories = {
